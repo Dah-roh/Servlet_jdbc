@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -52,6 +52,17 @@ public class UserDao {
         statement.close();
         disconnect();
         return rowInserted;
+    }
+
+    public List<User> listUserDetails (User user) throws SQLException {
+        List<User> userDetails = new ArrayList<User>();
+        String sql = "select * from Users where username = ?, password = ?";
+        connect();
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, user.getUserDescription());
+        ResultSet resultSet = statement.executeQuery();
+
+        return userDetails;
     }
 
 }
